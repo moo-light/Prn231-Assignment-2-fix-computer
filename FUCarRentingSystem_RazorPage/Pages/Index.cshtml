@@ -1,0 +1,56 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+@{
+    var role = HttpContext.Session.GetString("role");
+    var userName = HttpContext.Session.GetString("name");
+}
+<div class="text-center">
+    @if (string.IsNullOrEmpty(role))
+    {
+        <h1 class="display-4">Welcome</h1>
+        <a class="p-2 btn btn-primary col-4 d-inline-block fw-bold" asp-page="Login">Sign In</a>
+        <a class="p-2 btn btn-dark col-4 d-inline-block fw-bold" asp-page="Register">Sign Up</a>
+    }
+
+    @if (string.Equals(role, "User", StringComparison.OrdinalIgnoreCase))
+    {
+        <h1 class="display-4">Welcome @(userName)</h1>
+        <p class="row col-12">
+            <ul class="list-group col-3 m-auto ">
+                <li class="list-group-item-info list-group-item">
+                    <a asp-page="/User/Transaction/Index" class="text-dark text-decoration-none my-2">View transaction history.</a>
+                </li>
+                <li class="list-group-item-warning list-group-item">
+                    <a asp-page="/User/Transaction/Create" class="text-dark text-decoration-none my-2">Create Rent Transaction</a>
+                </li>
+            </ul>
+        </p>
+    }
+    else if (string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+    {
+        <h1 class="display-4">Welcome @(userName)</h1>
+        <p>
+            <ul class="list-group col-3 m-auto ">
+                <li class="list-group-item-info list-group-item">
+                    <a asp-page="/Admin/Customers/Index" class="text-dark text-decoration-none my-2">Manage customer information</a>
+                </li>
+                <li class="list-group-item-warning list-group-item">
+                    <a asp-page="/Admin/Cars/Index" class="text-dark text-decoration-none my-2">Manage car information</a>
+                </li>
+                <li class="list-group-item-primary list-group-item">
+                    <a asp-page="/Admin/Transaction/Index" class="text-dark text-decoration-none my-2">Manage rental information</a>
+                </li> 
+                <li class="list-group-item-secondary list-group-item">
+                    <a asp-page="/Admin/Report" class="text-dark text-decoration-none my-2">Generate report</a>
+                </li>
+            </ul>
+        </p>
+    }
+    <spac class="text-success my-2">@HttpContext.Session.GetString("Success")</spac>
+</div>
+

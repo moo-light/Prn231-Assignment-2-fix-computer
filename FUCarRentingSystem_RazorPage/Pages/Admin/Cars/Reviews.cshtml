@@ -1,0 +1,60 @@
+﻿@page "{id}"
+@model FUCarRentingSystem_RazorPage.Pages.Admin.Cars.ReviewsModel
+
+@{
+    ViewData["Title"] = "Reviews";
+}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">Reviews From Car @Html.DisplayFor(m=>m.Reviews[0].Car.CarName) </h1>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Reviews[0].ReviewStar)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Reviews[0].ReviewComment)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Reviews[0].Customer)
+                    </th>
+                    
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Reviews)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group gap-1">
+                                @for (int i = 1; i <= item.ReviewStar; i++)
+                                {
+                                    <div class="btn btn-warning  bg-warning hover star"></div>
+                                }
+                                @for (int i = item.ReviewStar; i <= 10; i++)
+                                {
+                                    <div class="btn btn-light bg-light  hover star"></div>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReviewComment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a asp-page="Index" class="page-link">Back To List</a>
+    </div>
+</div>

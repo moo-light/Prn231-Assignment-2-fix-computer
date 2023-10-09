@@ -1,0 +1,114 @@
+@page "{PageNumber?}"
+
+@model FUCarRentingSystem_RazorPage.Pages.Admin.Customers.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<form class="row">
+    <div class="">
+        <label class="form-label">Search:</label>
+        <input class="form-input" asp-for="Search" />
+    </div>
+</form>
+<p>
+    <a type="button" class="btn btn-link" asp-page="Create">Create New</a>
+</p>
+@if (Model.Customers?.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <label class="d-inline-block fw-bold" asp-for="Customers[0].CustomerName"></label>
+                </th>
+                <th>
+                    <label class="d-inline-block fw-bold" asp-for="Customers[0].Birthday"></label>
+                </th>
+                <th>
+                    <label class="d-inline-block fw-bold" asp-for="Customers[0].Email"></label>
+
+                </th>
+                <th>
+                    <label class="d-inline-block fw-bold" asp-for="Customers[0].Mobile"></label>
+                </th>
+                <th>
+                    <label class="d-inline-block fw-bold" asp-for="Customers[0].IdentityCard"></label>
+                </th>
+                <th>
+                    <label class="d-inline-block fw-bold" asp-for="Customers[0].LicenceNumber"></label>
+                </th>
+                <th>
+                    <label class="d-inline-block fw-bold" asp-for="Customers[0].LicenceDate"></label>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customers[0].CarRentals)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Customers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m=>item.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m=>item.Birthday)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m=>item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m=>item.Mobile)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m=>item.IdentityCard)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m=>item.LicenceNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m=>item.LicenceDate)
+                    </td>
+                    <td>
+                        @item.CarRentals.Count
+                       
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" type="button"
+                           asp-page="./Details" asp-route-id="@item.Id">
+                            <i class="fas fa-circle-info"></i>
+                        </a>
+                        <a class="btn btn-warning" type="button" asp-page="./Edit"
+                           asp-route-id="@item.Id">
+                            <i class="fas fa-edit"></i>
+                        </a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.PageCount > 1)
+    {
+        <form method="get" class="pagination ">
+            <span class="page-item  @(Model.PageNumber == 1 ? "disabled":"")"> <button class=" page-link" asp-page="" asp-route-PageNumber="@(Model.PageNumber-1)">Prev</button></span>
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <span class="page-item  @(Model.PageNumber == i ? "disabled":"")"> <button class=" page-link" asp-page="" asp-route-PageNumber="@i">@i</button></span>
+            }
+            <span class="page-item  @(Model.PageNumber == Model.PageCount ? "disabled":"")"> <button class=" page-link" asp-page="" asp-route-PageNumber="@(Model.PageNumber+1)">Next</button></span>
+            @if (Model.Search?.Length > 0)
+            {
+                <input class="form-input" type="hidden" asp-for="Search" />
+            }
+        </form>
+    }
+}
+
+@section Scripts{
+}

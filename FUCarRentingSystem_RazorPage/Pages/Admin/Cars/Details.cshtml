@@ -1,0 +1,54 @@
+@page "{id}"
+@model DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+
+}
+<div class="card">
+<div class="card-header">
+    <h4 class="card-title">Car @Request.RouteValues["id"]</h4>
+</div>
+<div class="card-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>@Html.DisplayNameFor(model => model.Car.CarName)</h4>
+                <p>@Html.DisplayFor(model => model.Car.CarName)</p>
+
+                <h4>@Html.DisplayNameFor(model => model.Car.CarModelYear)</h4>
+                <p>@Html.DisplayFor(model => model.Car.CarModelYear)</p>
+
+                <h4>@Html.DisplayNameFor(model => model.Car.Color)</h4>
+                <p>@Html.DisplayFor(model => model.Car.Color)</p>
+
+                <h4>@Html.DisplayNameFor(model => model.Car.Capacity)</h4>
+                <p>@Html.DisplayFor(model => model.Car.Capacity)</p>
+
+                <h4>@Html.DisplayNameFor(model => model.Car.Description)</h4>
+                <p>@Html.DisplayFor(model => model.Car.Description)</p>
+
+                <h4>@Html.DisplayNameFor(model => model.Car.ImportDate)</h4>
+                <p>@Html.DisplayFor(model => model.Car.ImportDate)</p>
+
+                <h4>@Html.DisplayNameFor(model => model.Car.RentPrice)</h4>
+                <p>@Html.DisplayFor(model => model.Car.RentPrice)</p>
+            </div>
+            <div class="col-md-6">
+                <h4>@Html.DisplayNameFor(model => model.Car.Producer)</h4>
+                <p>@Html.DisplayFor(model => model.Car.Producer.ProducerName)</p>
+              </div>
+        </div>
+    </div>
+
+    <span class="text-danger my-2">@ViewData["ErrorMessage"]</span>
+    <span class="text-success my-2" id="reload-if-have-value">@ViewData["SuccessMessage"]</span>
+</div>
+<div class="card-footer d-flex gap-2">
+        <form method="post" asp-page="./Details" asp-page-handler="Delete" onsubmit="return confirm('Are You Sure?')">
+            <input type="hidden" asp-for="Car.Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </form>
+    <a  class="btn btn-secondary" asp-page="Index">Back To List</a>
+</div>
+</div>

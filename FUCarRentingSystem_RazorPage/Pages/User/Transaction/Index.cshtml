@@ -1,0 +1,75 @@
+﻿@page
+@model FUCarRentingSystem_RazorPage.Pages.User.Transaction.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create Rent Transaction</a>
+</p>
+@if (Model.CarRental?.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CarRental[0].PickupDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CarRental[0].ReturnDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CarRental[0].RentPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CarRental[0].Customer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CarRental[0].Car)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CarRental)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PickupDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReturnDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RentPrice)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Car.CarName)
+                    </td>
+                    <td>
+                        @if (Model.HaveRate.ElementAt(Model.CarRental.IndexOf(item)))
+                        {
+                            <a asp-page="Reviews/Index" class="btn btn-info" asp-route-carId="@item.CarId">Rate</a>
+                        }
+                        else
+                        {
+                            <a asp-page="Reviews/Rate" class="btn btn-secondary" asp-route-carId="@item.CarId">Rate</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>User Haven't Create any transaction</h2>
+}
+<a asp-page="../../Index">Go Back</a>

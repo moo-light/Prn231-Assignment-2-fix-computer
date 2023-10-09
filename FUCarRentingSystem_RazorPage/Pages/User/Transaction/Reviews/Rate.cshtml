@@ -1,0 +1,49 @@
+﻿@page "{carId}"
+@model RateModel
+
+@{
+    ViewData["Title"] = "Rate";
+}
+
+<h1>Rate</h1>
+
+<h4>Review</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Review.CarId"/>
+            <input type="hidden" asp-for="Review.CustomerId" />
+            <div class="form-group">
+                <label asp-for="Review.ReviewStar" class="control-label"></label>
+                <input asp-for="Review.ReviewStar" id="rating" type="hidden" class="form-control" />
+                <div class="d-flex gap-1 bg-light btn-group w-auto border " id="rate-container">
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <div class="btn star" data-value="@i" onmouseover="ratingOver(@i)" onmouseout="ratingOut()" onclick="rate(@i)"></div>
+                    }
+                </div>
+                <span asp-validation-for="Review.ReviewStar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Review.ReviewComment" class="control-label"></label>
+                <input asp-for="Review.ReviewComment" class="form-control" />
+                <span asp-validation-for="Review.ReviewComment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

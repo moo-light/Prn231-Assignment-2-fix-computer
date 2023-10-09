@@ -1,0 +1,66 @@
+﻿@page
+@model FUCarRentingSystem_RazorPage.Pages.Admin.CarRentals.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CarRental[0].PickupDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarRental[0].ReturnDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarRental[0].RentPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarRental[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarRental[0].Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarRental[0].Car)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CarRental)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickupDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReturnDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RentPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.CarName)
+                </td>
+                <td>
+                    @Html.ActionLink("<i class=\"fas fa-circle-info\"></i>", "Details",new { carId = item.CarId , cusId = item.CustomerId,date=item.PickupDate},new {@class= "btn btn-sm btn-primary"})
+                    @Html.ActionLink("<i class=\"fas fa-edit\"></i>", "Edit", new { carId = item.CarId , cusId = item.CustomerId,date=item.PickupDate},new {@class ="btn btn-sm btn-warning"})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

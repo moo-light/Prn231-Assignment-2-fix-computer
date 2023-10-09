@@ -1,0 +1,41 @@
+@page "{id}"
+@model DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="card position-relative">
+    <form method="post" asp-page-handler="Delete" asp-route-id="@Model.Customer.Id" onsubmit="return confirm('Are you Sure?')" class="position-absolute top-0 end-0 m-2">
+        <button class="btn btn-danger">Remove Account</button>
+    </form>
+    <div class="col-6 card-body">
+        <h3 class="">@Model.Customer.CustomerName Information</h3>
+        <label class="d-inline-block fw-bold" asp-for="Customer.CustomerName"></label>
+        <div class="d-inline-block my-2"> @Html.DisplayFor(m=>m.Customer.CustomerName)</div>
+        <br />
+        <label class="d-inline-block fw-bold" asp-for="Customer.Birthday"></label>
+        <div class="d-inline-block my-2"> @Html.DisplayFor(m=>m.Customer.Birthday)</div>
+        <br />
+        <label class="d-inline-block fw-bold" asp-for="Customer.Email"></label>
+        <div class="d-inline-block my-2"> @Html.DisplayFor(m=>m.Customer.Email)</div>
+        <br />
+        <label class="d-inline-block fw-bold" asp-for="Customer.Mobile"></label>
+        <div class="d-inline-block my-2"> @Html.DisplayFor(m=>m.Customer.Mobile)</div>
+    </div>
+    <hr />
+    <div class="col-4 card-body">
+        <h3 class="">Identity</h3>
+        <label class="d-inline-block fw-bold" asp-for="Customer.IdentityCard"></label>
+        <div class="d-inline-block my-2"> @Html.DisplayFor(m=>m.Customer.IdentityCard)</div>
+        <br />
+        <label class="d-inline-block fw-bold" asp-for="Customer.LicenceNumber"></label>
+        <div class="d-inline-block my-2"> @Html.DisplayFor(m=>m.Customer.LicenceNumber)</div>
+        <br />
+        <label class="d-inline-block fw-bold" asp-for="Customer.LicenceDate"></label>
+        <div class="d-inline-block my-2"> @Html.DisplayFor(m=>m.Customer.LicenceDate)</div>
+    </div>
+    <hr />
+    <div class="card-footer d-flex gap-2">
+        <a class="btn btn-secondary" asp-page="Index">Back To List</a>
+    </div>
+</div>
+

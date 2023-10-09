@@ -1,0 +1,31 @@
+﻿@page
+@model             CreateModel
+@{
+}
+<form method="post" id="car-rental-form" >
+    <div class="page-item">
+        <label class="form-label" asp-for="CarRental.CarId"></label>
+        <button class="page-link" formmethod="get" asp-page="CarList">@(Model.Car?.CarName ?? "Select Your Vehicle")</button>
+        <input type="hidden" asp-for="CarRental.CarId"/>
+        <span class="text-danger my-2" asp-validation-for="CarRental.CarId"></span>
+    </div>
+    <div>
+        <label class="form-label" asp-for="CarRental.PickupDate"></label>
+        <input class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" onchange="updatePrice()" asp-for="CarRental.PickupDate" />
+        <span class="text-danger my-2" asp-validation-for="CarRental.PickupDate"></span>
+    </div>
+    <div>
+        <label class="form-label" asp-for="CarRental.ReturnDate"></label>
+        <input class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" onchange="updatePrice()" asp-for="CarRental.ReturnDate" />
+        <span class="text-danger my-2" asp-validation-for="CarRental.ReturnDate"></span>
+    </div>
+    <div>
+        <label class="form-label" asp-for="CarRental.RentPrice"></label>
+        <input class="form-control" readonly id="inp-rent-price" asp-for="CarRental.RentPrice" />
+        <span class="text-danger my-2" asp-validation-for="CarRental.RentPrice"></span>
+    </div>
+    <div class="text-danger my-2" >@ViewData["ErrorMessage"]</div>
+
+    <button class="btn btn-primary my-2" type="submit">Create Transaction</button>
+</form>
+<a class="" asp-page="Index">Go Back..</a>

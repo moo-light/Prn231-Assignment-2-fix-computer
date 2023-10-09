@@ -1,0 +1,19 @@
+﻿@page
+@model FUCarRentingSystem_RazorPage.Pages.LoginModel
+@{
+}
+
+<form method="post" class="card-body">
+    <div class="form-group">
+        <label class="form-label" asp-for="LoginDTO.Email"></label>
+        <input class="form-control" asp-for="LoginDTO.Email"/>
+        <span class="text-danger my-2" asp-validation-for="LoginDTO.Email"></span>
+    </div>
+    <div class="form-group">
+        <label class="form-label" asp-for="LoginDTO.Password"></label>
+        <input class="form-control" asp-for="LoginDTO.Password" />
+        <span class="text-danger my-2" asp-validation-for="LoginDTO.Password"></span>
+    </div>
+    <div class="text-danger my-2">@ViewData["ErrorMessage"]</div>
+    <button class="btn btn-primary">Sign In</button>
+</form>

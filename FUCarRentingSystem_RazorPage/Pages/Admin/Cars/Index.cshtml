@@ -1,0 +1,113 @@
+@page "{PageNumber?}"
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<form class="row">
+    <div class="">
+        <label class="form-label">Search:</label>
+        <input class="" asp-for="Search" />
+    </div>
+</form>
+<p>
+    <a type="button" class="btn btn-link" asp-page="Create">Create New</a>
+</p>
+@if (Model.Cars?.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].CarName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].CarModelYear)
+                </th>
+                <th class="col-sm-1">
+                    @Html.DisplayNameFor(model => model.Cars[0].Color)
+                </th>
+                <th class="col-sm-1">
+                    @Html.DisplayNameFor(model => model.Cars[0].Capacity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].ImportDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].RentPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].Producer)
+                </th>
+                <th>
+                    Reviews
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cars)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => item.CarName)</td>
+                    <td>@Html.DisplayFor(model => item.CarModelYear)</td>
+                    <td>@Html.DisplayFor(model => item.Color)</td>
+                    <td>@Html.DisplayFor(model => item.Capacity)</td>
+                    <td>@Html.DisplayFor(model => item.Description)</td>
+                    <td>@Html.DisplayFor(model => item.ImportDate)</td>
+                    <td>@Html.DisplayFor(model => item.RentPrice)</td>
+                    <td>
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>@Html.DisplayFor(model => item.Producer.ProducerName)</div>
+                            <a class="btn btn-sm btn-info" asp-page="./Producer" asp-route-id="@item.ProducerID">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>@Html.DisplayFor(model => item.Reviews.Count)</div>
+                            @if (item.Reviews?.Count > 0)
+                            {
+                                <a class="btn btn-sm btn-info" asp-page="./Reviews" asp-route-id="@item.Id">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" asp-page="./Details" asp-route-id="@item.Id">
+                            <i class="fas fa-circle-info"></i>
+                        </a>
+                        <a class="btn btn-sm btn-warning" asp-page="./Edit" asp-route-id="@item.Id">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.PageCount > 1)
+    {
+        <form method="get" class="pagination ">
+            <span class="page-item  @(Model.PageNumber == 1 ? "disabled":"")"> <button class=" page-link" asp-page="" asp-route-PageNumber="@(Model.PageNumber-1)">Prev</button></span>
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <span class="page-item  @(Model.PageNumber == i ? "disabled":"")"> <button class=" page-link" asp-page="" asp-route-PageNumber="@i">@i</button></span>
+            }
+            <span class="page-item  @(Model.PageNumber == Model.PageCount ? "disabled":"")"> <button class=" page-link" asp-page="" asp-route-PageNumber="@(Model.PageNumber+1)">Next</button></span>
+            @if (Model.Search?.Length > 0)
+            {
+                <input class="form-input" type="hidden" asp-for="Search" />
+            }
+        </form>
+    }
+}
+else
+{
+    <h3>Car List Empty</h3>
+}

@@ -1,0 +1,68 @@
+@page "{id}"
+@model EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="card">
+    <div class="card-header">
+        <h3>Edit @Model.Car.CarName</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post" id="edit-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Car.Id" class="form-control" />
+                    <div class="form-group">
+                        <label asp-for="Car.CarName" class="control-label"></label>
+                        <input asp-for="Car.CarName" class="form-control" />
+                        <span asp-validation-for="Car.CarName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Car.CarModelYear" class="control-label"></label>
+                        <input asp-for="Car.CarModelYear" class="form-control" />
+                        <span asp-validation-for="Car.CarModelYear" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Car.Color" class="control-label"></label>
+                        <input asp-for="Car.Color" class="form-control" />
+                        <span asp-validation-for="Car.Color" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Car.Capacity" class="control-label"></label>
+                        <input asp-for="Car.Capacity" class="form-control" />
+                        <span asp-validation-for="Car.Capacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Car.Description" class="control-label"></label>
+                        <input asp-for="Car.Description" class="form-control" />
+                        <span asp-validation-for="Car.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Car.ImportDate" class="control-label"></label>
+                        <input asp-for="Car.ImportDate" class="form-control" />
+                        <span asp-validation-for="Car.ImportDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Car.RentPrice" class="control-label"></label>
+                        <input asp-for="Car.RentPrice" class="form-control" />
+                        <span asp-validation-for="Car.RentPrice" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Car.ProducerID" class="control-label"></label>
+                        <select asp-for="Car.ProducerID" class="form-control" asp-items="ViewBag.Producer"></select>
+                    </div>
+                    <span class="text-danger my-2">@ViewData["ErrorMessage"]</span>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-footer d-flex gap-2">
+    <div class="form-group" >
+        <input type="submit" form="edit-form" value="Save" class="btn btn-primary" />
+    </div>
+    <a  class="btn btn-secondary" asp-page="Index">Cancel</a>
+</div>
+

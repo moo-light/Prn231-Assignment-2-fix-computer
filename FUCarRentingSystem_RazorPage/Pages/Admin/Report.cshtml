@@ -1,0 +1,142 @@
+﻿@page
+@using Domain.Entities;
+@model FUCarRentingSystem_RazorPage.Pages.Admin.ReportModel
+@{
+}
+
+<form class="row col-12 my-2 justify-content-center align-items-center">
+    <div class="form-group col-4">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger d-block my-2"></span>
+    </div>
+    <div class="form-group col-4">
+
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger d-block my-2"></span>
+    </div>
+    <div class="form-group col-4">
+
+        <label asp-for="CustomerId" class="form-label"></label>
+        <select name="CustomerId" class="form-control">
+            <option value="@null">None</option>
+            @foreach (var customer in Model.Customers)
+            {
+                <option value="@customer.Id" selected="@(Model.CustomerId == customer.Id)">@customer.CustomerName</option>
+            }
+        </select>
+        <span asp-validation-for="EndDate" class="text-danger d-block my-2"></span>
+    </div>
+
+    <div class="col-auto">
+        <label class="form-label"></label>
+        <button class="btn btn-info form-control">Generate Report</button>
+    </div>
+</form>
+@if (Model.CarRentals?.Count == 0)
+{
+    if (Model.CustomerId != null)
+    {
+        <h2>User Haven't Create any transaction.</h2>
+    }
+    else
+    {
+        <h2>No Transaction Yet.</h2>
+    }
+}
+else
+{
+    <table class="table table-info table-responsive-sm table-striped table-bordered">
+        <thead>
+            <tr class="table-bordered">
+                <th class="col-2">
+                    <label asp-for="CarRentals[0].Car.CarName"></label>
+
+                </th>
+                <th class="col-2">
+                    <label asp-for="CarRentals[0].Customer.CustomerName"></label>
+
+                </th>
+                <th>
+                    <label asp-for="CarRentals[0].PickupDate"></label>
+
+                </th>
+                <th>
+                    <label asp-for="CarRentals[0].ReturnDate"></label>
+                </th>
+                <th>
+                    <label asp-for="CarRentals[0].RentPrice"></label>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                CarRental? lastRental = null;
+            }
+            @foreach (var rental in Model.CarRentals)
+            {
+                if (lastRental != null)
+                {
+                    if (lastRental?.PickupDate.Year != rental.PickupDate.Year)
+                    {
+                        <tr class="my-2 table-light">
+                            <td colspan="5">
+                                <div class="h4">@lastRental?.PickupDate.Year</div>
+                            </td>
+                        </tr>
+                    }
+                    if (lastRental?.PickupDate.Month != rental.PickupDate.Month)
+                    {
+                        <tr class="my-2 table-light">
+                            <td colspan="5">
+                                <div class="h5 text-end">@($"{lastRental?.PickupDate.Year}/{lastRental?.PickupDate.Month}")</div>
+                            </td>
+                        </tr>
+                        <tr class="table-bordered">
+                            <th class="col-2">
+                                <label asp-for="CarRentals[0].Car.CarName"></label>
+
+                            </th>
+                            <th class="col-2">
+                                <label asp-for="CarRentals[0].Customer.CustomerName"></label>
+
+                            </th>
+                            <th>
+                                <label asp-for="CarRentals[0].PickupDate"></label>
+
+                            </th>
+                            <th>
+                                <label asp-for="CarRentals[0].ReturnDate"></label>
+                            </th>
+                            <th>
+                                <label asp-for="CarRentals[0].RentPrice"></label>
+                            </th>
+                        </tr>
+
+                    }
+                   
+                }
+                <tr class="table-bordered">
+                    <td>
+                        @Html.DisplayFor(model => rental.Car.CarName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => rental.Customer.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => rental.PickupDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => rental.ReturnDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => rental.RentPrice)
+                    </td>
+                </tr>
+                lastRental = rental;
+            }
+
+        </tbody>
+    </table>
+}
