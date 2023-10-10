@@ -19,7 +19,7 @@ public class CarDAO : BaseDAO<Car>
     {
         using (var context = new AppDBContext())
         {
-            Car car = context.Cars.First(x => x.Id == p.Id);
+            Car car = context.Cars.Include(x=>x.CarRentals).AsNoTracking().First(x => x.Id == p.Id);
             if (car.CarRentals.Count > 0)
             {
                 p.Status = false;

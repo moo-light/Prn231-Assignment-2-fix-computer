@@ -55,7 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 // Initialize data for DB
-SeedDatabase();
+//SeedDatabase();
 
 app.UseHttpsRedirection();
 

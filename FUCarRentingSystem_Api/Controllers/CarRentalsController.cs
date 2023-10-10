@@ -140,7 +140,7 @@ namespace FUCarRentingSystem_Api.Controllers
             if (carRental.CustomerId == 0) return new NotFoundObjectResult("Customer not found!");
             var car = await _carsRepository.GetCar(carRental.CarId);
             if (car == null) return new NotFoundObjectResult("Car Not Found");
-            if (carRental.PickupDate > carRental.ReturnDate) return new BadRequestObjectResult("Return date is not larger than Pickup date");
+            if (carRental.PickupDate > carRental.ReturnDate) return new BadRequestObjectResult("Return date cannot be larger than Pickup date");
             //  Success validation
             carRental.UpdateRentPrice(car.RentPrice);
             return null;

@@ -25,7 +25,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin
         [BindProperty(SupportsGet = true)]
         [DataType(DataType.Date)]
         [DateRange("01/01/1901")]
-        public DateTime EndDate { get; set; } = DateTime.Now;
+        public DateTime EndDate { get; set; } = DateTime.Now.AddYears(500);
         [BindProperty(SupportsGet = true)]
         public int? CustomerId { get; set; } = null;
         public List<Customer>? Customers { get; private set; }

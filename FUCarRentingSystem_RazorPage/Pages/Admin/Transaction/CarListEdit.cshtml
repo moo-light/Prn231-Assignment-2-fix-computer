@@ -124,3 +124,9 @@ else
 {
     <h3>No Car For Rent</h3>
 }
+<a class="page-item" asp-page="Edit"
+   asp-route-carId="@Request.RouteValues["carId"]"
+   asp-route-customerId="@Request.RouteValues["customerId"]"
+   asp-route-date="@Request.RouteValues["date"]">
+    Go Back
+</a>
