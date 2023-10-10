@@ -11,13 +11,19 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" id="edit-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Review.CustomerId" />
             <input type="hidden" asp-for="Review.CarId" />
             <div class="form-group">
                 <label asp-for="Review.ReviewStar" class="control-label"></label>
-                <input asp-for="Review.ReviewStar" class="form-control" />
+                <input asp-for="Review.ReviewStar" id="rating" type="hidden" class="form-control" />
+                <div class="d-flex gap-1 bg-light btn-group w-auto border" id="rate-container">
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <div class="btn star @(i<=Model.Review.ReviewStar?"bg-warning":"")" data-value="@i" onmouseover="ratingOver(@i)" onmouseout="ratingOut()" onclick="rate(@i)"></div>
+                    }
+                </div>
                 <span asp-validation-for="Review.ReviewStar" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -25,14 +31,15 @@
                 <input asp-for="Review.ReviewComment" class="form-control" />
                 <span asp-validation-for="Review.ReviewComment" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+         <div class="text-danger">@ViewData["ErrorMessage"]</div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="d-flex gap-2 my-2">
+    <div class="form-group">
+        <input type="submit" form="edit-form" value="Save" class="btn btn-primary" />
+    </div>
     <a asp-page="../Index">Back to List</a>
 </div>
 

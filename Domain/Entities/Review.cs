@@ -19,6 +19,7 @@ namespace Domain.Entities
         [Range(1, 10,ErrorMessage ="You haven't select rate")]
         public int ReviewStar { get; set; }
         [Required]
+        [DataType(DataType.MultilineText)]
         public string ReviewComment { get; set; } = null!;
         //=======================================//
      

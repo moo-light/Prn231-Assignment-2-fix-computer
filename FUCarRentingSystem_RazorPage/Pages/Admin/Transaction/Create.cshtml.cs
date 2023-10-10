@@ -36,6 +36,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
                 ReturnDate = DateTime.Now,
                 RentPrice = 0,
             };
+            CustomerId = HttpContext.Session.GetInt32("RentCarCusID");
             if (CarRental.CarId != null)
             {
                 Car = await _client.GetAsync<Car>(PageUriCar + $"/{CarRental.CarId}");
@@ -65,6 +66,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
             // Add Success
             if (response.IsSuccessStatusCode)
             {
+                HttpContext.Session.Remove("RentCarCusID");
                 HttpContext.Session.Remove("RentCar");
                 return RedirectToPage("./Index");
             }

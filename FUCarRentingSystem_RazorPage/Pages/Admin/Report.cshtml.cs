@@ -33,7 +33,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin
         public Dictionary<string, List<CarRental>> Times { get; private set; } = new();
         public async Task OnGet()
         {
-            if(StartDate > EndDate)
+            if (StartDate > EndDate)
             {
                 ModelState[nameof(StartDate)]?.Errors.Add("Start Date can't be larger than EndDate");
                 ModelState[nameof(StartDate)].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid;
@@ -41,16 +41,16 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin
             ODataQueryBuilder builder = new ODataQueryBuilder(Constants.ApiRoute.DefaultPath, new OData.QueryBuilder.Options.ODataQueryBuilderOptions
             {
                 UseCorrectDateTimeFormat = false
-            })  ;
+            });
             var uri = builder.For<CarRental>("Carrentals").ByList()
-                .OrderByDescending(x => x.PickupDate ).OrderByDescending(x=>x.RentPrice)
-                .Filter(x => StartDate <= x.PickupDate && x.PickupDate <= EndDate).ToUri();
-            Console.WriteLine(uri.ToString());
+                .OrderByDescending(x => x.PickupDate).OrderByDescending(x => x.RentPrice)
+                .Filter(x => StartDate <= x.PickupDate && x.PickupDate <= EndDate)
+                .Expand(x=>x.Car).Expand(x=>x.Customer).ToUri();
             var renting = await _client.GetAsync<List<CarRental>>(uri.ToString());
             if (CustomerId != null) renting = renting.Where(x => x.CustomerId == CustomerId).ToList();
             CarRentals = renting ?? new();
             // get Customer Name
-            uri =  builder.For<Customer>("Customers").ByList().Select(x => new {x.CustomerName,x.Id}).ToUri();
+            uri = builder.For<Customer>("Customers").ByList().Select(x => new { x.CustomerName, x.Id }).ToUri();
             var customers = await _client.GetAsync<List<Customer>>(uri.ToString());
             Customers = customers ?? new();
         }

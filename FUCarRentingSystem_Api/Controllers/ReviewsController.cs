@@ -61,7 +61,9 @@ namespace FUCarRentingSystem_Api.Controllers
             {
                 return NotFound();
             }
-
+            Console.WriteLine(carId);
+            Console.WriteLine(customerId);
+            Console.WriteLine(review.ReviewComment);
             try
             {
                 await _reviewRepository.UpdateReview(review);

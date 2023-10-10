@@ -7,6 +7,7 @@
 
 <h1>Car Renting List</h1>
 <form class="d-none" id="rent-form" method="post">
+    <input type="hidden" asp-for="CustomerId" />
     <input type="hidden" asp-for="CarRental.CarId" />
     <input type="hidden" asp-for="CarRental.PickupDate" />
     <input type="hidden" asp-for="CarRental.ReturnDate" />
@@ -14,7 +15,9 @@
 </form>
 <div class="card">
     <div class="card-body">
-        <label class="d-inline" asp-for="CarRental.CarId"></label>:
+        <label class="d-inline" asp-for="CustomerId"></label>:
+        <span>@Html.DisplayFor(m=>m.CustomerId)</span>
+        <br></br><label class="d-inline" asp-for="CarRental.CarId"></label>:
         <span>@Html.DisplayFor(m=>m.CarRental.CarId)</span>
         <br></br>
         <label class="d-inline" asp-for="CarRental.PickupDate"></label>:

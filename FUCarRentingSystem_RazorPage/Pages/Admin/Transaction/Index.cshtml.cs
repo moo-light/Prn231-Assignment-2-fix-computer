@@ -31,7 +31,8 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
             Dictionary<string, object?> @params = new Dictionary<string, object?>
             {
                 {"$filter","status eq true"},
-                {"$orderBy",$"PickupDate desc"}
+                {"$orderBy",$"PickupDate desc"},
+                {"$expand",$"Car,Customer"}
             };
             CarRental = await _client.GetAsync<List<CarRental>>(Constants.ApiRoute.CarRentalsApi, @params);
             var uricount = new UriBuilder(Constants.ApiRoute.CarRentalsApi.Replace("api", "odata") + "/$count").Uri.AddQuery(@params);

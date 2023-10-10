@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Domain.Entities;
+using FUCarRentingSystem_RazorPage.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Domain;
-using Domain.Entities;
-using System.Net.Http.Headers;
-using FUCarRentingSystem_RazorPage.Utils;
-using NuGet.Protocol;
 using OData.QueryBuilder.Builders;
+using System.Net.Http.Headers;
 
 namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
 {

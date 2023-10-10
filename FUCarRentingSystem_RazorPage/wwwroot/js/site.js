@@ -17,7 +17,6 @@ ratingOver = (i) => {
 ratingOut = () => {
     $(`#rate-container div.star`).removeClass("bg-warning");
     $(`#rate-container div.star:nth-child(n+1):nth-child(-n+${rating.val()})`).addClass("bg-warning");
-
 }
 rate = (i) => {
     rating.val(i);

@@ -22,6 +22,8 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
 
         public IList<Car>? Cars { get; set; } = default!;
         [BindProperty(SupportsGet = true)]
+        public int? CustomerId { get; set; } = default!;
+        [BindProperty(SupportsGet = true)]
         public CarRentalDTO? CarRental { get; set; }
         public string PageUri { get; }
 
@@ -44,6 +46,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
                                                                          && f.Date(s.ReturnDate) >= CarRental.PickupDate
                                                                          || f.Date(s.ReturnDate) >= CarRental.ReturnDate
                                                                          && f.Date(s.ReturnDate) >= CarRental.ReturnDate))
+                                                    .Expand(x=>x.Car).Expand(x=>x.Customer)
                                                     .ToUri();
             CarRental.UpdateRentPrice(Cars?.FirstOrDefault(x => x.Id == CarRental.CarId)?.RentPrice ?? 0);
             List<CarRental>? carRentals = await _client.GetAsync<List<CarRental>>(uri.ToString());
@@ -56,7 +59,8 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
                 }
                 removeList.ForEach(x => Cars.Remove(x));
             }
-
+            HttpContext.Session.SetInt32($"RentCarCusID", CustomerId.Value);
+            HttpContext.Session.SetString($"RentCar", CarRental.Serialize());
             return Page();
         }
 
@@ -74,6 +78,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
                 CarRental.CarId = id;
                 CarRental.UpdateRentPrice(car.RentPrice);
             }
+            HttpContext.Session.SetInt32($"RentCarCusID", CustomerId.Value);
             HttpContext.Session.SetString($"RentCar", CarRental.Serialize());
             return RedirectToPage("./Create");
         }

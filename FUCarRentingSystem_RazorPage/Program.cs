@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Components.Routing;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);

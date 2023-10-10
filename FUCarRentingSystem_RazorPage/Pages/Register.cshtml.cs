@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Domain;
-using Domain.Entities;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using Domain.Entities;
 using FUCarRentingSystem_RazorPage.Utils;
-using System.Text.Json;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.CodeAnalysis.Formatting;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 
 namespace FUCarRentingSystem_RazorPage.Pages
 {

@@ -44,6 +44,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
                                                                          && f.Date(s.ReturnDate) >= CarRental.PickupDate
                                                                          || f.Date(s.ReturnDate) >= CarRental.ReturnDate
                                                                          && f.Date(s.ReturnDate) >= CarRental.ReturnDate))
+                                                    .Expand(x=>x.Car).Expand(x=>x.Customer)
                                                     .ToUri();
             CarRental.UpdateRentPrice(Cars?.FirstOrDefault(x => x.Id == CarRental.CarId)?.RentPrice ?? 0);
             List<CarRental>? carRentals = await _client.GetAsync<List<CarRental>>(uri.ToString());
@@ -57,6 +58,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
                 removeList.ForEach(x => Cars.Remove(x));
             }
 
+            HttpContext.Session.SetString($"RentCar", CarRental.Serialize());
             return Page();
         }
 

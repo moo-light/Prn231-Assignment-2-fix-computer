@@ -36,7 +36,9 @@
         <tbody>
             @foreach (var item in Model.CarRental)
             {
-                <tr>
+                var timespan = ((item.PickupDate - DateTime.Today).Days);
+                var closeTime = timespan >= 0 && timespan <= 7 ? "table-info" : "";
+                <tr class="@closeTime">
                     <td>
                         @Html.DisplayFor(modelItem => item.PickupDate)
                     </td>

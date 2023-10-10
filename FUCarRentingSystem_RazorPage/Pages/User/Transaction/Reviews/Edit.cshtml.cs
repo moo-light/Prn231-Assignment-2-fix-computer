@@ -47,18 +47,21 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction.Reviews
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            await Console.Out.WriteLineAsync(Review.Serialize());
             if (!ModelState.IsValid) return Page();
-
-            Review = await _client.GetAsync<Review>(PageUri + $"/{CarId},{Review.CustomerId}");
-            if (Review == null) return NotFound();
+            Review.CarId = CarId;
+            var review = await _client.GetAsync<Review>(PageUri + $"/{CarId},{Review.CustomerId}");
+            if (review == null) return NotFound();
             
             var content = new StringContent(Review.Serialize(), System.Text.Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync(PageUri, content);
+            var response = await _client.PutAsync(PageUri + $"/{CarId},{Review.CustomerId}", content);
+            await Console.Out.WriteLineAsync(PageUri + $"/{CarId},{Review.CustomerId}");
+            await Console.Out.WriteLineAsync(Review.Serialize());
+            await Console.Out.WriteLineAsync(response.IsSuccessStatusCode+"");
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToPage("../Index");
+                return RedirectToPage("Index", new { CarId });
             }
+            ViewData["ErrorMessage"] = await response.Content.ReadAsStringAsync();
             return Page();
         }
     }

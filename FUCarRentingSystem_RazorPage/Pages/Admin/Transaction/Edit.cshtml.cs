@@ -12,6 +12,7 @@ using System.Reflection.Metadata;
 using FUCarRentingSystem_RazorPage.Utils;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using DTOS.DTOS;
+using Microsoft.AspNetCore.Http;
 
 namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
 {
@@ -55,9 +56,15 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
                     RentPrice = carRental.RentPrice,
                     ReturnDate = carRental.ReturnDate
                 };
-                CustomerIdentity = customerId;
+                CustomerIdentity =  customerId;
+            }
+            else
+            {
+                // help reminding customerId
+                CustomerIdentity = HttpContext.Session.GetInt32($"{Key}CusID"); ;
             }
             // save session
+            HttpContext.Session.SetInt32($"{Key}CusID", CustomerIdentity.Value);
             HttpContext.Session.SetString(Key, CarRental.Serialize());
             return Page();
 
@@ -86,6 +93,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
             // Add Success
             if (response.IsSuccessStatusCode)
             {
+                HttpContext.Session.Remove($"{Key}CusID");
                 HttpContext.Session.Remove(Key);
                 return RedirectToPage("./Index");
             }

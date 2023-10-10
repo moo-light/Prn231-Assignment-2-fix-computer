@@ -27,15 +27,15 @@ modelBuilder.EntitySet<Customer>("Customers");
 modelBuilder.EntitySet<CarRental>("CarRentals");
 modelBuilder.EntityType<Review>();
 
-builder.Services.AddControllers(opt => opt.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true).AddJsonOptions(options =>
+builder.Services.AddControllers(opt => opt.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
+    .AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.WriteIndented = false;
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-}).AddOData(options => options.EnableQueryFeatures(maxTopValue: null)
-                                            .AddRouteComponents(routePrefix: "odata", model: modelBuilder.GetEdmModel())); ;
+}).AddOData(options => options.EnableQueryFeatures(maxTopValue: null).AddRouteComponents(routePrefix: "odata", model: modelBuilder.GetEdmModel())); ;
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
