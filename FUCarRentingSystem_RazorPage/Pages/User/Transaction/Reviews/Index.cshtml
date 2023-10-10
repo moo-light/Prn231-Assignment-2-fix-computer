@@ -10,15 +10,20 @@
     <div class="card-header d-flex">
         <h4 class="m-0">Review</h4>
         <form class="ms-auto" method="post" onsubmit="return confirm('Are You Sure?')">
-            <button class="btn btn-danger">Remove</button>
+            <button class="btn btn-danger">Remove Review</button>
         </form>
     </div>
     <dl class="row card-body ">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Review.ReviewStar)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.ReviewStar)
+        <dd class="col-sm-10 ">
+            <div class="d-flex gap-1  align-content-start">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <div class="star btn @(i<= Model.Review.ReviewStar?"btn-warning":"btn-secondary")"></div>
+                }
+            </div>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Review.ReviewComment)
@@ -26,10 +31,10 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Review.ReviewComment)
         </dd>
-        
+
     </dl>
     <div class="text-danger my-2">@ViewData["ErrorMessage"]</div>
-    
+
 </div>
 <div class="my-2">
     <a asp-page="Edit" class="btn btn-primary me-2" asp-route-carId="@Model.CarId">Edit</a>

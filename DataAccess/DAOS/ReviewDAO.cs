@@ -23,6 +23,7 @@ public class ReviewDAO : BaseDAO<Review>
             var query = includes.Aggregate(context.Set<Review>().AsQueryable(),
                                             (current, include) => current.Include(include));
             entity = await query.FirstOrDefaultAsync(x => x.CarId == carId && x.CustomerId == customerId);
+        
         }
         return entity;
     }

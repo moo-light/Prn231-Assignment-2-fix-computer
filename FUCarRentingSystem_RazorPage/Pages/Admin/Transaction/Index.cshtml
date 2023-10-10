@@ -1,16 +1,13 @@
 ﻿@page
-@model FUCarRentingSystem_RazorPage.Pages.Admin.CarRentals.IndexModel
-
+@model FUCarRentingSystem_RazorPage.Pages.Admin.Transaction.IndexModel
 @{
-    ViewData["Title"] = "Index";
 }
-
 <h1>Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="CreateTransaction">Create New</a>
 </p>
-<table class="table">
+<table class="table table-primary">
     <thead>
         <tr>
             <th>
@@ -21,9 +18,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CarRental[0].RentPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CarRental[0].Status)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CarRental[0].Customer)
@@ -37,7 +31,7 @@
     <tbody>
         @foreach (var item in Model.CarRental)
         {
-            <tr>
+            <tr class="@(item.PickupDate < DateTime.Today?"table-secondary":"")">
                 <td>
                     @Html.DisplayFor(modelItem => item.PickupDate)
                 </td>
@@ -47,9 +41,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.RentPrice)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.Customer.CustomerName)
                 </td>
@@ -57,10 +49,28 @@
                     @Html.DisplayFor(modelItem => item.Car.CarName)
                 </td>
                 <td>
-                    @Html.ActionLink("<i class=\"fas fa-circle-info\"></i>", "Details",new { carId = item.CarId , cusId = item.CustomerId,date=item.PickupDate},new {@class= "btn btn-sm btn-primary"})
-                    @Html.ActionLink("<i class=\"fas fa-edit\"></i>", "Edit", new { carId = item.CarId , cusId = item.CustomerId,date=item.PickupDate},new {@class ="btn btn-sm btn-warning"})
+                    <a class="btn btn-info" asp-page="Details"
+                       asp-route-carId="@item.CarId" asp-route-customerId="@item.CustomerId" asp-route-date="@item.PickupDate.ToString("yyyy-MM-dd")">
+                        <i class="fas fa-circle-info"></i>
+                    </a>
+                    @if (item.PickupDate >= DateTime.Today)
+                    {
+                        <a class="btn btn-warning" asp-page="Edit"
+                           asp-route-carId="@item.CarId" asp-route-customerId="@item.CustomerId" asp-route-date="@item.PickupDate.ToString("yyyy-MM-dd")">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-warning disabled"
+                           title="Can't Edit Transaction that already procedded"
+                           asp-page="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+

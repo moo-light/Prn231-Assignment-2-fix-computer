@@ -20,7 +20,7 @@ namespace FUCarRentingSystem_RazorPage.Pages
             PageUri = Constants.ApiRoute.SignIn;
         }
         [BindProperty]
-        public LoginDTO? LoginDTO { get; set; }
+        public LoginDTO LoginDTO { get; set; }
         public string PageUri { get; }
         public IActionResult OnGetLogout()
         {

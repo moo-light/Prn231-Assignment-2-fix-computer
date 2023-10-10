@@ -1,5 +1,5 @@
 using Domain.Entities;
-using Domain.Validations;
+using DTOS.Validations;
 using FUCarRentingSystem_RazorPage.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -38,11 +38,16 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin
                 ModelState[nameof(StartDate)]?.Errors.Add("Start Date can't be larger than EndDate");
                 ModelState[nameof(StartDate)].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid;
             }
-            ODataQueryBuilder builder = new ODataQueryBuilder(Constants.ApiRoute.DefaultPath);
+            ODataQueryBuilder builder = new ODataQueryBuilder(Constants.ApiRoute.DefaultPath, new OData.QueryBuilder.Options.ODataQueryBuilderOptions
+            {
+                UseCorrectDateTimeFormat = false
+            })  ;
             var uri = builder.For<CarRental>("Carrentals").ByList()
-                .OrderByDescending(x => x.PickupDate).Filter(x => StartDate <= x.PickupDate && x.ReturnDate <= EndDate)
-                .Filter(x => CustomerId == null || x.CustomerId == CustomerId).ToUri();
+                .OrderByDescending(x => x.PickupDate ).OrderByDescending(x=>x.RentPrice)
+                .Filter(x => StartDate <= x.PickupDate && x.PickupDate <= EndDate).ToUri();
+            Console.WriteLine(uri.ToString());
             var renting = await _client.GetAsync<List<CarRental>>(uri.ToString());
+            if (CustomerId != null) renting = renting.Where(x => x.CustomerId == CustomerId).ToList();
             CarRentals = renting ?? new();
             // get Customer Name
             uri =  builder.For<Customer>("Customers").ByList().Select(x => new {x.CustomerName,x.Id}).ToUri();

@@ -1,4 +1,4 @@
-﻿using Domain.Validations;
+﻿using DTOS.Validations;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,6 +24,7 @@ namespace Domain.Entities
         [Required]
         [DataType(DataType.Date)]
         [DateRange("01/01/1901", "12/31/2024")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime Birthday { get; set; }
         [Required]
         [StringLength(12)]
@@ -36,6 +37,7 @@ namespace Domain.Entities
         [Required]
         [DataType(DataType.Date)]
         [DateRange("01/01/1901", "12/31/2024")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime LicenceDate { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [DataType(DataType.Password)]

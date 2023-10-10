@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Entities
+namespace DTOS.Validations
 {
     public class TodayRequiredAttribute : ValidationAttribute
     {

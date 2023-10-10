@@ -32,6 +32,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction.Reviews
         {
             var customerId = HttpContext.Session.GetInt32("id");
             var uri = new ODataQueryBuilder(PageUri).For<Review>($"{CarId},{customerId}").ByList().ToUri();
+            await Console.Out.WriteLineAsync(   uri.ToString());
             var review = await _client.GetAsync<Review>(uri.ToString());
             if (review == null)
             {
@@ -54,7 +55,6 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction.Reviews
             {
                 Review = review;
                 var response = await _client.DeleteAsync(uri.ToString());
-                Console.WriteLine(response.IsSuccessStatusCode);
                 if (!response.IsSuccessStatusCode)
                 {
                     ViewData["ErrorMessage"] = "Remove Failed!";

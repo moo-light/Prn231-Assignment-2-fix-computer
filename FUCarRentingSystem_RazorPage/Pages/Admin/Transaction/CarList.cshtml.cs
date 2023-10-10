@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OData.QueryBuilder.Builders;
 using System.Net.Http.Headers;
 
-namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
+namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
 {
     public class CarListModel : PageModel
     {

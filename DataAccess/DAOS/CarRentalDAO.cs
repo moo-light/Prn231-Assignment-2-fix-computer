@@ -37,22 +37,37 @@ public class CarRentalDAO : BaseDAO<CarRental>
         }
         await BaseDAO<CarRental>.AddAsync(p);
     }
-    public static new async Task UpdateAsync(CarRental p)
+    public static new async Task UpdateAsync(int carId, int customerId, DateTime date, CarRental p)
     {
         using (var context = new AppDBContext())
         {
-            var oldRent = await context.CarRentals.FindAsync(new { p.CarId, p.CustomerId, p.PickupDate });
+
+
+            var oldRent = await context.CarRentals.FindAsync(carId, customerId, date);
 
             var existRent = await context.CarRentals
                  .Where(x => x.CarId != oldRent.CarId || x.CustomerId != oldRent.CustomerId || x.PickupDate != oldRent.PickupDate)
                  .AnyAsync(x => p.CarId == x.CarId
-                                &&( x.PickupDate <= p.PickupDate
+                                && (x.PickupDate <= p.PickupDate
                                 && p.PickupDate <= x.ReturnDate
                                 || x.PickupDate <= p.ReturnDate
                                 && p.ReturnDate <= x.ReturnDate));
             if (existRent) throw new InvalidDataException("Rent Exist!");
+            using (var transaction = await context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    context.Remove(oldRent);
+                    await context.AddAsync(p);
+                    await context.SaveChangesAsync();
+                    await context.Database.CommitTransactionAsync();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                }
+            }
         }
-        await BaseDAO<CarRental>.UpdateAsync(p);
     }
     public static async Task<CarRental> GetByIdAsync(int carId, int customerId, DateTime date, params Expression<Func<CarRental, object>>[] includes)
     {

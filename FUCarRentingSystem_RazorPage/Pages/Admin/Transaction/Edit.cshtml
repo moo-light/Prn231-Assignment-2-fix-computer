@@ -1,0 +1,72 @@
+﻿@page "{carId},{customerId},{date}"
+@model             EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>CarRental</h4>
+<hr />
+<div class="card-body">
+    <div class="col-md-4">
+        <form method="post" id="edit-form"
+              asp-route-carId="@Request.RouteValues["carId"]"
+              asp-route-customerId="@Request.RouteValues["customerId"]"
+              asp-route-date="@Request.RouteValues["date"]">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var item = Model.CarRental;
+            }
+            @Request.Query.FirstOrDefault(x=>x.Key == "date").Value
+
+            <div class="form-group">
+                <label class="control-label">Customer</label>
+                <select class="form-control" asp-for="CustomerIdentity" asp-items="ViewBag.CustomerId"></select>
+                <span asp-validation-for="CustomerIdentity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" asp-for="CarRental.CarId"></label>
+                <button class="page-link" formmethod="post" asp-page-handler="Select"
+                        asp-page="CarListEdit"
+                        asp-route-carId="@Request.RouteValues["carId"]"
+                        asp-route-customerId="@Request.RouteValues["customerId"]"
+                        asp-route-date="@Request.RouteValues["date"]">
+                    
+                    @(Model.Car?.CarName ?? "Select Your Vehicle")
+                </button>
+                <input type="hidden" asp-for="CarRental.CarId" />
+                <span class="text-danger my-2" asp-validation-for="CarRental.CarId"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarRental.PickupDate" class="control-label"></label>
+                <input asp-for="CarRental.PickupDate" class="form-control" />
+                <span asp-validation-for="CarRental.PickupDate" class="text-danger"></span>
+            </div>   <div class="form-group">
+                <label asp-for="CarRental.ReturnDate" class="control-label"></label>
+                <input asp-for="CarRental.ReturnDate" class="form-control" />
+                <span asp-validation-for="CarRental.ReturnDate" class="text-danger"></span>
+            </div>
+            <div>
+                <label class="form-label" asp-for="CarRental.RentPrice"></label>
+                <input class="form-control" readonly id="inp-rent-price" asp-for="CarRental.RentPrice" />
+                <span class="text-danger my-2" asp-validation-for="CarRental.RentPrice"></span>
+            </div>
+            <div class="text-danger">@ViewData["ErrorMessage"]</div>
+        </form>
+    </div>
+</div>
+
+<div class="d-flex gap-2 m-2">
+    <div class="form-group">
+        <input type="submit" form="edit-form" value="Save" class="btn btn-primary" />
+    </div>
+    <a class="page-link" asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

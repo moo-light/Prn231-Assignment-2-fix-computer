@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel;
+﻿using DTOS.DTOS;
+using DTOS.Validations;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using FUCarRentingSystem_RazorPage.Pages.User.Transaction;
 
 namespace Domain.Entities
 {
@@ -30,10 +29,12 @@ namespace Domain.Entities
         [Key, Column(Order = 3)]
         [TodayRequired]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}", ApplyFormatInEditMode =false)]
         public DateTime PickupDate { get; set; }
         [Required]
         [TodayRequired]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime ReturnDate { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = false,DataFormatString = "{0:C2}")]
         public decimal RentPrice { get; set; }

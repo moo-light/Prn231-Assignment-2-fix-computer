@@ -1,4 +1,5 @@
 ﻿using FUCarRentingSystem_RazorPage.Utils;
+using Microsoft.AspNetCore.Http.Extensions;
 
 public class AuthMiddleware : IMiddleware
 {
@@ -6,9 +7,9 @@ public class AuthMiddleware : IMiddleware
     {
         // select the role
         var role = context.Session.GetString("role");
-
+        string url = context.Request.GetDisplayUrl();
         // if role equal admin  then allow every paththat contain admin
-        if (context.Request.Path.Value.ToLower().Contains("admin"))
+        if (url.ToLower().Contains("admin"))
         {
             //if role == null return 401
             if (role == null)
@@ -26,7 +27,7 @@ public class AuthMiddleware : IMiddleware
             await next(context);
             return;
         }
-        if (context.Request.Path.Value.ToLower().Contains("user"))
+        if (url.ToLower().Contains("user"))
         {
             //if role == null return 401
             if (role == null)

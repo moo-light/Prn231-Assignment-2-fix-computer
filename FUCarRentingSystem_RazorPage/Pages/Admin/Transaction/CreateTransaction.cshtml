@@ -1,0 +1,52 @@
+﻿@page
+@model FUCarRentingSystem_RazorPage.Pages.Admin.Transaction.CreateTransactionModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>CarRental</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" id="car-rental-form">
+            <div class="page-item">
+                <label class="form-label">Customer</label>
+                <select class="form-contro" asp-for="CustomerId" asp-items="ViewBag.CustomerId"></select>
+                <span class="text-danger my-2" asp-validation-for="CustomerId"></span>
+            </div>
+            <div class="page-item">
+                <label class="form-label" asp-for="CarRental.CarId"></label>
+                <button class="page-link" formmethod="get" asp-page="CarList">@(Model.Car?.CarName ?? "Select Your Vehicle")</button>
+                <input type="hidden" asp-for="CarRental.CarId" />
+                <span class="text-danger my-2" asp-validation-for="CarRental.CarId"></span>
+            </div>
+            <div>
+                <label class="form-label" asp-for="CarRental.PickupDate"></label>
+                <input class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" onchange="updatePrice()" asp-for="CarRental.PickupDate" />
+                <span class="text-danger my-2" asp-validation-for="CarRental.PickupDate"></span>
+            </div>
+            <div>
+                <label class="form-label" asp-for="CarRental.ReturnDate"></label>
+                <input class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" onchange="updatePrice()" asp-for="CarRental.ReturnDate" />
+                <span class="text-danger my-2" asp-validation-for="CarRental.ReturnDate"></span>
+            </div>
+            <div>
+                <label class="form-label" asp-for="CarRental.RentPrice"></label>
+                <input class="form-control" readonly id="inp-rent-price" asp-for="CarRental.RentPrice" />
+                <span class="text-danger my-2" asp-validation-for="CarRental.RentPrice"></span>
+            </div>
+            <div class="text-danger my-2">@ViewData["ErrorMessage"]</div>
+
+            <button class="btn btn-primary my-2" type="submit">Create Transaction</button>
+            <a class="page-link page-item" asp-page="Index">Cancel</a>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

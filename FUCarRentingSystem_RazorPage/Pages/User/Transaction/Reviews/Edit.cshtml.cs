@@ -37,9 +37,9 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction.Reviews
         public string PageUri { get; }
         public async  Task<IActionResult> OnGet()
         {
-
             var customerId = HttpContext.Session.GetInt32("id");
-            Review = await _client.GetAsync<Review>(PageUri + $"/{CarId},{customerId}");
+            string path = PageUri + $"/{CarId},{customerId}";
+            Review = await _client.GetAsync<Review>(path);
             if (Review == null) return NotFound();
             return Page();
         }

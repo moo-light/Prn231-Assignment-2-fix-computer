@@ -35,15 +35,20 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
         public async Task<IActionResult> OnGetAsync()
         {
             int? customerId = HttpContext.Session.GetInt32("id");
-            var query = new ODataQueryBuilder<Car>(PageUri).For<Car>(x => x.Status.Equals(true));
 
-            string path = $"{PageUri}/?$filter=status eq true and customerId eq {customerId}&expand=customer($select=id,customername),car($select=id,carname)";
+            string path = $"{PageUri}/?$filter=status eq true and customerId eq {customerId}" +
+                $"&$expand=customer($select=id,customername),car($select=id,carname)" +
+                $"&$orderby=PickupDate desc";
             CarRental = await _client.GetAsync<List<CarRental>>(path);
-            path = new ODataQueryBuilder($"{PageUriReview}").For<Review>("").ByList().Select(x => x.CarId).ToUri().ToString();
+
+            path = new ODataQueryBuilder($"{PageUriReview}").For<Review>("").ByList()
+                .Select(x => x.CarId).Filter(x=>x.CustomerId == customerId).ToUri().ToString();
             var rating = await _client.GetAsync<List<Review>>(path);
             HaveRate = new List<bool>();
             foreach (var item in CarRental)
             {
+                Console.WriteLine(path);
+                Console.WriteLine(item.CarId +" "+ rating.Any(x => x.CarId == item.CarId));
                 if (rating.Any(x => x.CarId == item.CarId)) HaveRate.Add(true);
                 else HaveRate.Add(false);
             }

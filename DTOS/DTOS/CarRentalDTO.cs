@@ -1,8 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using DTOS.Validations;
 using System.ComponentModel.DataAnnotations;
-using Domain.Entities;
 
-namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
+namespace DTOS.DTOS
 {
     public class CarRentalDTO
     {

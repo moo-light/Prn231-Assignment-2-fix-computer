@@ -3,9 +3,9 @@ using DTOS.DTOS;
 using FUCarRentingSystem_RazorPage.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
+namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
 {
     public class CreateModel : PageModel
     {
@@ -14,15 +14,18 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
         public CreateModel()
         {
             _client = new HttpClient();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             PageUri = Constants.ApiRoute.CarRentalsApi;
             PageUriCar = Constants.ApiRoute.CarsApi;
         }
+
         [BindProperty]
         public CarRentalDTO CarRental { get; set; } = default!;
+        [BindProperty]
+        public int? CustomerId { get; set; } = default!;
+        public Car? Car { get; private set; }
         public string PageUri { get; }
         public string PageUriCar { get; }
-        public Car? Car { get; private set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -40,27 +43,9 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
             HttpContext.Session.SetString("RentCar", CarRental.Serialize());
             return Page();
         }
-        
-        public async Task<IActionResult> OnGetPriceAsync(CarRentalDTO carRental)
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (carRental.CarId == null) return new JsonResult(0.ToString("C2"));
-            if (carRental.CarId != null)
-            {
-                var car = await _client.GetFromJsonAsync<Car>($"{PageUri}/{carRental.CarId}?$filter=status eq true&$select=rentprice");
-                if (car == null) return new JsonResult(0.ToString("C2"));
-                carRental.UpdateRentPrice(car.RentPrice);
-                CarRental = carRental;
-                return new JsonResult(carRental.RentPrice.ToString("C2"));
-            }
-
-            HttpContext.Session.SetString("RentCar", carRental.Serialize());
-
-            return new JsonResult(0.ToString("C2"));
-        }
-        public async Task<IActionResult> OnPost()
-        {
-            var customerId = HttpContext.Session.GetInt32("id");
-            if (customerId == null) return Page();
             if (CarRental.CarId == null)
             {
                 ModelState["CarRental.CarId"]?.Errors.Add("Select Your Vehicle!");
@@ -73,7 +58,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
             if (!ModelState.IsValid)
                 return Page();
             // Add Car
-            CarRental carrental = new(CarRental, customerId.Value);//map Carrental
+            CarRental carrental = new(CarRental, CustomerId.Value);//map Carrental
 
             var stringContent = new StringContent(carrental.Serialize(), System.Text.Encoding.UTF8, "application/json");
             var response = await _client.PostAsync(PageUri, stringContent);
@@ -86,6 +71,14 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
             // Add Failed 
             ViewData["ErrorMessage"] = await response.Content.ReadAsStringAsync();
             return Page();
+        }
+
+        public override PageResult Page()
+        {
+            var customers = _client.GetAsync<List<Customer>>(Constants.ApiRoute.CustomersApi);
+            customers.Wait();
+            ViewData["CustomerId"] = new SelectList(customers.Result, "Id", "CustomerName");
+            return base.Page();
         }
     }
 }

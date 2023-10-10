@@ -56,11 +56,11 @@
                     <td>
                         @if (Model.HaveRate.ElementAt(Model.CarRental.IndexOf(item)))
                         {
-                            <a asp-page="Reviews/Index" class="btn btn-info" asp-route-carId="@item.CarId">Rate</a>
+                            <a asp-page="Reviews/Index" class="btn btn-info" asp-route-carId="@item.CarId">View Review</a>
                         }
                         else
                         {
-                            <a asp-page="Reviews/Rate" class="btn btn-secondary" asp-route-carId="@item.CarId">Rate</a>
+                            <a asp-page="Reviews/Rate" class="btn btn-secondary" asp-route-carId="@item.CarId">Create Review</a>
                         }
                     </td>
                 </tr>

@@ -1,4 +1,4 @@
-﻿@page 
+﻿@page
 @model FUCarRentingSystem_RazorPage.Pages.User.Profile.EditModel
 
 @{
@@ -53,25 +53,25 @@
                 <input asp-for="Customer.LicenceNumber" class="form-control" />
                 <span asp-validation-for="Customer.LicenceNumber" class="text-danger"></span>
             </div>
-       
+
             <div class="form-group">
                 <label asp-for="Customer.LicenceDate" class="control-label"></label>
                 <input asp-for="Customer.LicenceDate" class="form-control" />
                 <span asp-validation-for="Customer.LicenceDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+
             <span class="text-danger my-2"> @ViewData["ErrorMessage"]</span>
         </form>
     </div>
-    <div class=" d-flex gap-2">
-        <a asp-page="Edit" class="btn btn-info ">Edit Profile</a>
+    <div class=" d-flex gap-2 my-2">
+        <input type="submit" form="edit-form" value="Save" class="btn btn-primary" />
         <a asp-page="./Index" class="page-link">Back to List</a>
     </div>
 </div>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

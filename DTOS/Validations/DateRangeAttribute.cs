@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
-namespace Domain.Validations
+namespace DTOS.Validations
 {
     public class DateRangeAttribute : ValidationAttribute
     {
@@ -29,11 +29,11 @@ namespace Domain.Validations
                 throw new ArgumentException("Invalid maxDate format. Use 'MM/dd/yyyy'.");
             }
         }
-    
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (value == null) return ValidationResult.Success;
-            if ( !(value is DateTime))
+            if (!(value is DateTime))
             {
                 return new ValidationResult("Invalid date value.");
             }

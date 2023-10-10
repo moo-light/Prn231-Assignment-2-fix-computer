@@ -8,19 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using Domain;
 using Domain.Entities;
 
-namespace FUCarRentingSystem_RazorPage.Pages.Admin.CarRentals
+namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
 {
     public class DeleteModel : PageModel
     {
-        private readonly Domain.AppDBContext _context;
+        private readonly AppDBContext _context;
 
-        public DeleteModel(Domain.AppDBContext context)
+        public DeleteModel(AppDBContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-      public CarRental CarRental { get; set; } = default!;
+        public CarRental CarRental { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -35,7 +35,7 @@ namespace FUCarRentingSystem_RazorPage.Pages.Admin.CarRentals
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 CarRental = carrental;
             }

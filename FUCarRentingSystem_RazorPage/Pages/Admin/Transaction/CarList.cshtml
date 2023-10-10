@@ -1,0 +1,120 @@
+﻿@page
+@model             CarListModel
+
+@{
+    ViewData["Title"] = "CarList";
+}
+
+<h1>Car Renting List</h1>
+<form class="d-none" id="rent-form" method="post">
+    <input type="hidden" asp-for="CarRental.CarId" />
+    <input type="hidden" asp-for="CarRental.PickupDate" />
+    <input type="hidden" asp-for="CarRental.ReturnDate" />
+    <input type="hidden" asp-for="CarRental.RentPrice" />
+</form>
+<div class="card">
+    <div class="card-body">
+        <label class="d-inline" asp-for="CarRental.CarId"></label>:
+        <span>@Html.DisplayFor(m=>m.CarRental.CarId)</span>
+        <br></br>
+        <label class="d-inline" asp-for="CarRental.PickupDate"></label>:
+        <span>@Html.DisplayFor(m=>m.CarRental.PickupDate)</span>
+        <br></br>
+        <label class="d-inline" asp-for="CarRental.ReturnDate"></label>:
+        <span>@Html.DisplayFor(m=>m.CarRental.ReturnDate)</span>
+        <br></br>
+        <label class="d-inline" asp-for="CarRental.RentPrice"></label>:
+        <span>@Html.DisplayFor(m=>m.CarRental.RentPrice)</span>
+    </div>
+</div>
+
+@if (Model.Cars.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].CarName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].CarModelYear)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].Color)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].Capacity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].ImportDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].RentPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cars[0].Producer)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cars)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CarName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CarModelYear)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Color)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Capacity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImportDate)
+                    </td>
+                    <td>
+                        @{
+                            dynamic days = 0;
+                            try
+                            {
+                                days = (Model.CarRental?.ReturnDate - Model.CarRental?.PickupDate).Value.Days + 1;
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        <div class="d-flex gap-2">
+                            <div>@Html.DisplayFor(modelItem => item.RentPrice)</div>
+                            <div>x </div>
+                            <div>@(days)</div>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producer.ProducerName)
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" form="rent-form" asp-page="CarList"
+                                asp-page-handler="Rent" asp-route-id="@item.Id">
+                            Rent
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3>No Car For Rent</h3>
+}

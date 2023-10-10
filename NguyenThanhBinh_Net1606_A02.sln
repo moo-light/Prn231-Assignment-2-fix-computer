@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FUCarRentingSystem_Api", "F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOS", "DTOS\DTOS.csproj", "{B3228C37-0914-4C06-A5F0-D0D799DC70A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMachine", "TestMachine\TestMachine.csproj", "{B408E406-010C-467D-BA19-C609CB4EE889}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMachine", "TestMachine\TestMachine.csproj", "{B408E406-010C-467D-BA19-C609CB4EE889}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

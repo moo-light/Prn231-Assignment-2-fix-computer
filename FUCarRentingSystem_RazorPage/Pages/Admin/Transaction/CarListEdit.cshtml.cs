@@ -1,18 +1,19 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using DTOS.DTOS;
 using FUCarRentingSystem_RazorPage.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OData.QueryBuilder.Builders;
 using System.Net.Http.Headers;
 
-namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
+namespace FUCarRentingSystem_RazorPage.Pages.Admin.Transaction
 {
-    public class CarListModel : PageModel
+    public class CarListModelEdit : PageModel
     {
         private readonly HttpClient _client;
 
-        public CarListModel()
+        public CarListModelEdit()
         {
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -23,11 +24,15 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
         public IList<Car>? Cars { get; set; } = default!;
         [BindProperty(SupportsGet = true)]
         public CarRentalDTO? CarRental { get; set; }
+        public int? CustomerId { get; set; }
         public string PageUri { get; }
+        private string Key { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnPostSelectAsync(int carId, int customerId, string date)
         {
-            CarRental ??= HttpContext.Session.GetString($"RentCar")?.Deserialize<CarRentalDTO>() ?? new CarRentalDTO
+            CustomerId = customerId;
+            Key = $"RentCar{carId}{customerId}{date}";
+            CarRental ??= HttpContext.Session.GetString(Key)?.Deserialize<CarRentalDTO>() ?? new CarRentalDTO
             {
                 PickupDate = DateTime.Today,
                 ReturnDate = DateTime.Today,
@@ -60,12 +65,14 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
             return Page();
         }
 
-        public async Task<IActionResult> OnPostRent(int id)
+        public async Task<IActionResult> OnPostRent(int id, int carId, int customerId, string date)
         {
+            Key = $"RentCar{carId}{customerId}{date}";
+
             var response = await _client.GetAsync($"{PageUri}/{id}");
             if (!response.IsSuccessStatusCode)
             {
-                return RedirectToAction("", new { CarRental });
+                return RedirectToAction("", new { CarRental, carId, customerId, date });
             }
             string strdata = await response.Content.ReadAsStringAsync();
             var car = strdata.Deserialize<Car>();
@@ -74,8 +81,8 @@ namespace FUCarRentingSystem_RazorPage.Pages.User.Transaction
                 CarRental.CarId = id;
                 CarRental.UpdateRentPrice(car.RentPrice);
             }
-            HttpContext.Session.SetString($"RentCar", CarRental.Serialize());
-            return RedirectToPage("./Create");
+            HttpContext.Session.SetString(Key, CarRental.Serialize());
+            return RedirectToPage("./Edit", new { carId, customerId, date });
         }
 
     }

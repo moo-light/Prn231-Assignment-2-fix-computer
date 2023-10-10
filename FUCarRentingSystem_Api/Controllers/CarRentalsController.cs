@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Domain;
+﻿using Application.Interfaces;
 using Domain.Entities;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Application.Interfaces;
-using Application.Repositories;
-using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
-using Microsoft.AspNetCore.OData.Results;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
 
 namespace FUCarRentingSystem_Api.Controllers
 {
@@ -42,9 +32,9 @@ namespace FUCarRentingSystem_Api.Controllers
 
         [HttpGet("{carId},{customerId},{date}")]
         [EnableQuery]
-        public async Task<ActionResult<CarRental>> GetCarRental(int carId, int customerId, DateTime date)
+        public async Task<ActionResult<CarRental>> GetCarRental(int carId, int customerId, string date)
         {
-            var carRental = await _carRentalsRepository.GetCarRental(carId, customerId, date);
+            var carRental = await _carRentalsRepository.GetCarRental(carId, customerId, DateTime.Parse(date));
 
             if (carRental == null)
             {
@@ -58,17 +48,22 @@ namespace FUCarRentingSystem_Api.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [EnableQuery]
         [HttpPut("{carId},{customerId},{date}")]
-        public async Task<IActionResult> PutCarRental(int carId, int customerId, DateTime date, [FromBody] CarRental carRental)
+        public async Task<IActionResult> PutCarRental(int carId, int customerId, string date, [FromBody] CarRental carRental)
         {
+            var curCarRental = await _carRentalsRepository.GetCarRental(carId, customerId, DateTime.Parse(date));
+            if (curCarRental == null)
+            {
+                return NotFound("CarRental Not exist");
+            }
             var actionResult = await Validate(carRental);
             if (actionResult != null) return actionResult;
             try
             {
-                await _carRentalsRepository.UpdateCarRental(carRental);
+                await _carRentalsRepository.UpdateCarRental(carId, customerId, DateTime.Parse(date),carRental);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CarRentalExists(carId, customerId, date))
+                if (!CarRentalExists(carId, customerId, DateTime.Parse(date)))
                 {
                     return NotFound();
                 }
@@ -122,9 +117,9 @@ namespace FUCarRentingSystem_Api.Controllers
         // DELETE: api/CarRentals/5
         [EnableQuery]
         [HttpDelete("{carId},{customerId},{date}")]
-        public async Task<IActionResult> DeleteCarRental(int carId, int customerId, DateTime date)
+        public async Task<IActionResult> DeleteCarRental(int carId, int customerId, string date)
         {
-            var carRental = await _carRentalsRepository.GetCarRental(carId, customerId, date);
+            var carRental = await _carRentalsRepository.GetCarRental(carId, customerId, DateTime.Parse(date));
             if (carRental == null)
             {
                 return NotFound();
@@ -150,5 +145,6 @@ namespace FUCarRentingSystem_Api.Controllers
             carRental.UpdateRentPrice(car.RentPrice);
             return null;
         }
+       
     }
 }

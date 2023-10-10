@@ -8,6 +8,6 @@ namespace Application.Interfaces
         Task DeleteCarRental(CarRental p);
         Task<IEnumerable<CarRental>> GetCarRental();
         Task<CarRental?> GetCarRental(int carId, int customerId, DateTime date);
-        Task UpdateCarRental(CarRental p);
+        Task UpdateCarRental(int carId, int customerId, DateTime date, CarRental p);
     }
 }

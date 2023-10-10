@@ -13,12 +13,12 @@ namespace Application.Repositories
         }
 
         public async Task AddCarRental(CarRental p) => await CarRentalDAO.AddAsync(p);
-        public async Task UpdateCarRental(CarRental p) => await CarRentalDAO.UpdateAsync(p);
+        public async Task UpdateCarRental(int carId, int customerId, DateTime date, CarRental p) => await CarRentalDAO.UpdateAsync(carId, customerId,date,p);
         public async Task DeleteCarRental(CarRental p) => await CarRentalDAO.DeleteAsync(p);
 
         public async Task<CarRental?> GetCarRental(int carId, int customerId, DateTime date)
         {
-            CarRental carRental = await CarRentalDAO.GetByIdAsync(carId, customerId, date);
+            CarRental carRental = await CarRentalDAO.GetByIdAsync(carId, customerId, date,CarRentalDAO.Includes);
             return carRental;
         }
 
